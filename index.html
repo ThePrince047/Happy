@@ -13,10 +13,11 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #1a1a1a;
             font-family: Arial, sans-serif;
             overflow: hidden;
             flex-direction: column;
+            color: white;
+            background: linear-gradient(to bottom, #001d3d, #002855 70%, #071b1b);
         }
 
         /* Center message container */
@@ -116,14 +117,78 @@
             pointer-events: none;
             z-index: 1;
         }
+
+        /* Moon and Stars */
+        #moon {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 60%, #f0f0f0 70%, transparent 90%);
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.5);
+            z-index: 2;
+        }
+
+        /* Stars */
+        .star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkling 2s infinite ease-in-out alternate;
+        }
+
+        @keyframes twinkling {
+            0%, 100% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* Diyas */
+        .diyas-container {
+            position: absolute;
+            bottom: 60px; /* Position above the rangoli */
+            display: flex;
+            justify-content: space-around;
+            width: 80%; /* Width adjusted for better spacing */
+            margin: 0 auto; /* Center the container */
+        }
+
+        .diya {
+            position: relative;
+            width: 40px; /* Adjust the width */
+            height: 20px; /* Adjust the height */
+            background-color: #8b5a2b; /* Dark brown for diya */
+            border-radius: 20px 20px 0 0; /* Rounded top for diya */
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3); /* Inner shadow and outer shadow for depth */
+            margin-top: 10px;
+        }
+
+        .flame {
+            position: absolute;
+            bottom: 100%; /* Position flame above the diya */
+            left: 50%;
+            width: 12px;
+            height: 18px;
+            background: radial-gradient(circle, #ffcc00 60%, #f2a900 100%); /* Gradients for flame */
+            border-radius: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.5s infinite alternate; /* Flicker animation */
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.2); opacity: 0.8; }
+        }
     </style>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <!-- Center content wrapper for message and button -->
-    <div id="contentWrapper" width="100px">
+    <div id="contentWrapper">
         <!-- Reveal Button -->
         <button id="revealButton" onclick="revealSurprise()">Reveal Surprise</button>
         <!-- Diwali Message -->
@@ -135,34 +200,45 @@
     <!-- Fireworks Container -->
     <div id="fireworksContainer"></div>
 
+    <!-- Moon -->
+    <div id="moon"></div>
+
+    <!-- Stars -->
+    <div class="star" style="top: 20%; left: 15%;"></div>
+    <div class="star" style="top: 25%; left: 30%;"></div>
+    <div class="star" style="top: 35%; left: 70%;"></div>
+    <div class="star" style="top: 40%; left: 50%;"></div>
+    <div class="star" style="top: 15%; left: 80%;"></div>
+
+    <!-- Diyas -->
+    <div class="diyas-container">
+        <div class="diya"><div class="flame"></div></div>
+        <div class="diya"><div class="flame"></div></div>
+        <div class="diya"><div class="flame"></div></div>
+        <div class="diya"><div class="flame"></div></div>
+        <div class="diya"><div class="flame"></div></div>
+    </div>
+
     <!-- Audio -->
     <audio id="diwaliSound" src="Happy_Diwali-Jethalal-.mp3" preload="auto"></audio>
 
     <script>
         function revealSurprise() {
-            // Hide the button
             document.getElementById('revealButton').style.display = 'none';
-
-            // Show the Diwali message and marquee message
             document.getElementById('diwaliMessage').style.display = 'block';
             document.getElementById('marqueeMessage').style.display = 'block';
-
-            // Play Diwali sound
             const sound = document.getElementById('diwaliSound');
             sound.play();
 
-            // Continuously generate random fireworks and sparklers
             setInterval(() => {
                 const container = document.getElementById('fireworksContainer');
                 for (let i = 0; i < 7; i++) {
                     const firework = document.createElement('div');
                     const sparkler = document.createElement('div');
 
-                    // Assign classes
                     firework.className = 'firework';
                     sparkler.className = 'sparkler';
 
-                    // Random positions covering top, middle, and bottom of the screen
                     firework.style.left = Math.random() * 100 + 'vw';
                     firework.style.top = Math.random() * 100 + 'vh';
 
@@ -172,13 +248,12 @@
                     container.appendChild(firework);
                     container.appendChild(sparkler);
 
-                    // Remove elements after animation
                     setTimeout(() => {
                         firework.remove();
                         sparkler.remove();
                     }, 2000);
                 }
-            }, 1000); // Generate new effects every second
+            }, 1000);
         }
     </script>
 </body>
